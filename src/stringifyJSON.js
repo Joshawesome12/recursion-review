@@ -54,11 +54,30 @@ var stringifyJSON = function(obj) {
       }
     //if object
       if (!Array.isArray(element) && typeof element === 'object' && element !== null) {
-      
-      }      
+        acc.push(stringifyJSON(element));
+      }  
     }
-    string += String(acc);
   }
+//IF OBJECT
+//OBJECT BLOCK
+  if (!Array.isArray(obj) && obj !== null) {
+    var objAcc = [];
+    for (var key in obj) {
+    //if string / number
+      if (typeof obj[key] === 'string' || typeof obj[key] === 'number') {
+        objAcc.push('\"' + key + '\":' + '\"' + obj[key] + '\"');
+      } else if (obj[key] === null) {
+        objAcc.push('\"' + key + '\":' + null);
+      } else if (typeof obj[key] === 'boolean') {
+        objAcc.push('\"' + key + '\":' + obj[key]);
+      } else if (Array.isArray(obj[key])) {
+        objAcc.push('\"' + key + '\":' + stringifyJSON(obj[key]));
+      } else if (!Array.isArray(obj[key]) && typeof obj[key] === 'object' && obj[key] !== null) {
+        objAcc.push( '\"' + key + '\":' + stringifyJSON(obj[key]));
+      }
+    }
+    return '{' + String(objAcc) + '}';
+  }
+  string += String(acc);
   return ('[' + string + ']');
 };
-//test
