@@ -25,11 +25,11 @@ var stringifyJSON = function(obj) {
 //IF ARRAY
 // ARRAY BLOCK
   var acc = [];
-    if (Array.isArray(obj) && typeof obj === 'object') {
+  if (Array.isArray(obj) && typeof obj === 'object') {
       // if array is empty
-      if (obj.length === 0) {
-        return ('[]');
-      }
+    if (obj.length === 0) {
+      return ('[]');
+    }
     for (var i = 0; i < obj.length; i++) {
       var element = obj[i];
     //if null
@@ -57,7 +57,7 @@ var stringifyJSON = function(obj) {
       
       }      
     }
-      string += String(acc);
-    }
+    string += String(acc);
+  }
   return ('[' + string + ']');
 };
