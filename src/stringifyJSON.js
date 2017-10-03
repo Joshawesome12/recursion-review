@@ -6,12 +6,12 @@
 var stringifyJSON = function(obj) {
   var string = '';
 //IF NULL
-  if (typeof obj === null) {
+  if (obj === null) {
     return 'null';
   }
 //IF STRING
   if (typeof obj === 'string') {
-    return obj;
+    return `"${obj}"`;
   }
 //IF NUMBER
   if (typeof obj === 'number') {
@@ -19,7 +19,7 @@ var stringifyJSON = function(obj) {
   }
 //IF BOOLEAN
   if (typeof obj === 'boolean') {
-    return obj;
+    return `${obj}`;
   }
   
 //IF ARRAY
@@ -60,24 +60,32 @@ var stringifyJSON = function(obj) {
   }
 //IF OBJECT
 //OBJECT BLOCK
-  if (!Array.isArray(obj) && obj !== null) {
-    var objAcc = [];
-    for (var key in obj) {
-    //if string / number
-      if (typeof obj[key] === 'string' || typeof obj[key] === 'number') {
-        objAcc.push('\"' + key + '\":' + '\"' + obj[key] + '\"');
-      } else if (obj[key] === null) {
-        objAcc.push('\"' + key + '\":' + null);
-      } else if (typeof obj[key] === 'boolean') {
-        objAcc.push('\"' + key + '\":' + obj[key]);
-      } else if (Array.isArray(obj[key])) {
-        objAcc.push('\"' + key + '\":' + stringifyJSON(obj[key]));
-      } else if (!Array.isArray(obj[key]) && typeof obj[key] === 'object' && obj[key] !== null) {
-        objAcc.push( '\"' + key + '\":' + stringifyJSON(obj[key]));
+      if (!Array.isArray(obj) && obj !== null){
+        var objAcc = [];
+        for (var key in obj){
+        //if string / number
+        if (typeof obj[key] === 'string' || typeof obj[key] === 'number'){
+          objAcc.push('\"'+key+'\":' + '\"'+obj[key]+'\"');
+          }
+          //if null
+        else if (obj[key] === null){
+          objAcc.push('\"'+key+'\":' + null);
+        }
+        //if boolean
+        else if (typeof obj[key] === 'boolean'){
+          objAcc.push('\"'+key+'\":' +obj[key]);
+        }
+        //if array
+        else if (Array.isArray(obj[key])){
+          objAcc.push('\"'+key+'\":' + stringifyJSON(obj[key]));
+        }
+        //if object
+        else if (!Array.isArray(obj[key]) && typeof obj[key] === 'object' && obj[key] !== null){
+              objAcc.push( '\"'+ key +'\":' + stringifyJSON(obj[key]));
+        }
       }
+      return '{'+String(objAcc)+'}';
     }
-    return '{' + String(objAcc) + '}';
-  }
-  string += String(acc);
+    string += String(acc);
   return ('[' + string + ']');
 };
